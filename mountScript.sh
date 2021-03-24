@@ -5,9 +5,9 @@
 #purpose :  Mount a partition of shared user files (I don't recommend config files) files. Add static entry in fstab.
 #        :  Then create a soft link to the mount point in $TARGET_SOFT_LINK.
 
-PARTITION=nvme0n1p6
+PARTITION=""
 TARGET_MOUNT_DIR=/mnt/localFileShare/
-TARGET_SOFT_LINK=/home/$(logname)/localFileShare
+TARGET_SOFT_LINK=/home/$(logname)/
 
 # todo
 # add fstab entry
