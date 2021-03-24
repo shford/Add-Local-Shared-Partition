@@ -26,7 +26,7 @@ echo
 echo "Disclaimer: This script was tested thoroughly on 5.8.0-45-generic #51~20.04.1-Ubuntu but it was designed for convenience to be run on a trusted system, not for bullet-proof security."
 echo "It provided as is without any gurantees."
 echo
-readline -p "Hit ^Ctrl+C to exit or 'c' to continue." throwawayvar  
+read -p "Hit ^Ctrl+C to exit or press enter to continue: " throwawayvar  
 echo
 
 #ensure root privilege
@@ -60,7 +60,6 @@ if [[ -d ${TARGET_MOUNT_DIR} ]]; then
 fi
 
 #create mount directory
-clear
 echo "Creating mount point..."
 mkdir ${TARGET_MOUNT_DIR}
 
