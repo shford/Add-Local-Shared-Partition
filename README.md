@@ -1,4 +1,4 @@
-# Bash Scripts
+# Local Partition Mounter/Symlinker
 > A bash script to mount a partition, add a symlink, and add an fstab entry.
 
 This script should be pretty idiot proof so hopefully someone else will also enjoy being able to conveniently access one shared local partiton across different linux OS's from a directory of their choosing.
