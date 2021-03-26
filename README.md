@@ -7,18 +7,18 @@ This script should be pretty idiot proof so hopefully someone else will also enj
 
 ## Installation
 
-OS X & Linux:
+In a Linux terminal:
 
 ```sh
+cd /~/Desktop/
 git clone https://github.com/shford/Add-Local-Shared-Partition.git
-cd ~/Desktop/
 chmod 744 mountScript.sh
 sudo ./mountScript.sh
 ```
 
 ## Release History
 
-The script should be working. I still need to add a line to create the fstab entry. Please let me know if there are any issues.
+Script was fully functional during all testing on Ubuntu 20.04.01. Please let me know if there are any issues.
 
 ## Meta
 
