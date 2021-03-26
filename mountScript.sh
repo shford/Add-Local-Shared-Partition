@@ -33,7 +33,7 @@ echo "  3) Partition in question is not currently mounted." #I decided not to fo
 echo
 echo "Disclaimer: This script was tested thoroughly on Ubuntu 20.04.1 but it was designed for convenience to be run on a trusted system, not for bullet-proof security."
 echo
-read -p "Hit ^Ctrl+C to exit or press enter to continue: " pause  
+echo "Add any point type ^Ctrl+C to exit."  
 echo
 
 #=======================================================================================================
@@ -54,6 +54,7 @@ PARTITION_VALID=true
 (ls /dev/ | grep ${PARTITION}) > /dev/null 2>&1
 
 while [[ (-z ${PARTITION} || !("${?}" -ne 0)) && (PARTITION_VALID) ]]; do
+	echo "Device List:"
 	blkid | cat -n
 	read -p "Enter the number of your corresponding partition: " PARTITION_NUMBER;
 	PARTITION=$(blkid | cat -n | grep "   ${PARTITION_NUMBER}" | sed 's/://g' | sed 's/^[^\t]*/ /g' | sed 's/^\s*//g' | cut -d ' ' -f 1)
@@ -114,7 +115,8 @@ ln -s ${TARGET_MOUNT_DIR} ${TARGET_SOFT_LINK}
 UUID=$(blkid | grep -i ${PARTITION} | cut -d ' ' -f 3)
 
 # prevent duplicate fstab entries
-if [[ $(grep ${UUID} /etc/fstab) -ne 0 ]]; then
+$(grep -qs "${UUID}" /etc/fstab)
+if [[ "${?}" > 0 ]]; then
 	# add entry
 	echo "# Add fstab entry for ${PARTITION} via mountScript.sh" >> /etc/fstab
 	echo "${UUID}    ${TARGET_MOUNT_DIR}   auto    rw,user,auto    0    0" >> /etc/fstab
@@ -124,17 +126,17 @@ fi
 ### Take Ownership of Drive ###
 #=======================================================================================================
 # common cases for yes 
-echo "Would you like to take ownership of all files at on parition ${PARTITION}?"
+echo "Would you like to take ownership of all files at on partition ${PARTITION}?"
 echo "Enter y if: "
 echo "  1) You want to be able to modify/delete existing files/folders and create/modify/delete new files/folders as well. Entering y will run:"
 echo "   \"sudo chown -R $(logname):$(logname) ${TARGET_MOUNT_DIR}\""
 # common cases for no
 echo "Enter n if: "
-echo "  1) You'd prefer to individually modify file permisions. (Use the below command upon completion of this script.)"
+echo "  1) You'd prefer to individually modify file permissions. (Use the below command upon completion of this script.)"
 echo "   \"sudo chown $(logname):$(logname) ${TARGET_MOUNT_DIR}/<some_file_of_your_choosing>\" without the <>."
-echo "  2) You don't want to tamper with existing files but still be able to create/modify/delete new files. (Use the below command upon completion of this script.)"
+echo "  2) You don't want to tamper with existing files but still be able to create/modify/delete new files. (Use the below command upon completion of this script)"
 echo "   \"sudo chown $(logname):$(logname) ${TARGET_MOUNT_DIR}/\""
-read -p "Enter y to take ownership or n to finish the script without modifying files: " TAKE_OWNERSHIP;
+read -p "Enter y to take ownership or n to finish the script without modifying files: " TAKE_OWNERSHIP
 echo
 if [[ !("${TAKE_OWNERSHIP}" == "y" || "${TAKE_OWNERSHIP}" == "Y" || "${TAKE_OWNERSHIP}" == "Yes" || "${TAKE_OWNERSHIP}" == "YES" || "${TAKE_OWNERSHIP}" == "Continue") ]]; then
 	echo "Finishing script..."; exit 0
