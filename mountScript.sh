@@ -55,9 +55,9 @@ PARTITION_VALID=true
 
 while [[ (-z ${PARTITION} || !("${?}" -ne 0)) && (PARTITION_VALID) ]]; do
 	echo "Device List:"
-	blkid | cat -n
+	blkid | sort | cat -n
 	read -p "Enter the number of your corresponding partition: " PARTITION_NUMBER;
-	PARTITION=$(blkid | cat -n | grep "   ${PARTITION_NUMBER}" | sed 's/://g' | sed 's/^[^\t]*/ /g' | sed 's/^\s*//g' | cut -d ' ' -f 1)
+	PARTITION=$(blkid | sort | cat -n | grep "   ${PARTITION_NUMBER}" | sed 's/://g' | sed 's/^[^\t]*/ /g' | sed 's/^\s*//g' | cut -d ' ' -f 1)
 
 	# verify entry
 	read -p "Is ${PARTITION} correct? Enter y or n: " PARTITION_VALID
@@ -112,7 +112,7 @@ ln -s ${TARGET_MOUNT_DIR} ${TARGET_SOFT_LINK}
 ### Add fstab Entry ###
 #=======================================================================================================
 # get UUID
-UUID=$(blkid | grep -i ${PARTITION} | cut -d ' ' -f 3)
+UUID=$(blkid | grep -qsi ${PARTITION} | cut -d ' ' -f 3)
 
 # prevent duplicate fstab entries
 $(grep -qs "${UUID}" /etc/fstab)
